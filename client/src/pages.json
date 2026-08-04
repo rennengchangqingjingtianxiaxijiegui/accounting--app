@@ -1,0 +1,120 @@
+{
+  "pages": [
+    {
+      "path": "pages/record/index",
+      "style": {
+        "navigationBarTitleText": "记账"
+      }
+    },
+    {
+      "path": "pages/record/add",
+      "style": {
+        "navigationBarTitleText": "记一笔"
+      }
+    },
+    {
+      "path": "pages/record/edit",
+      "style": {
+        "navigationBarTitleText": "编辑记录"
+      }
+    },
+    {
+      "path": "pages/record/detail",
+      "style": {
+        "navigationBarTitleText": "记录详情"
+      }
+    },
+    {
+      "path": "pages/report/index",
+      "style": {
+        "navigationBarTitleText": "统计报表"
+      }
+    },
+    {
+      "path": "pages/report/trend",
+      "style": {
+        "navigationBarTitleText": "收支趋势"
+      }
+    },
+    {
+      "path": "pages/report/category",
+      "style": {
+        "navigationBarTitleText": "分类占比"
+      }
+    },
+    {
+      "path": "pages/book/list",
+      "style": {
+        "navigationBarTitleText": "我的账本"
+      }
+    },
+    {
+      "path": "pages/book/create",
+      "style": {
+        "navigationBarTitleText": "创建账本"
+      }
+    },
+    {
+      "path": "pages/book/members",
+      "style": {
+        "navigationBarTitleText": "成员管理"
+      }
+    },
+    {
+      "path": "pages/auth/login",
+      "style": {
+        "navigationBarTitleText": "登录"
+      }
+    },
+    {
+      "path": "pages/auth/register",
+      "style": {
+        "navigationBarTitleText": "注册"
+      }
+    },
+    {
+      "path": "pages/user/profile",
+      "style": {
+        "navigationBarTitleText": "个人资料"
+      }
+    },
+    {
+      "path": "pages/user/change-password",
+      "style": {
+        "navigationBarTitleText": "修改密码"
+      }
+    }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "记账",
+    "navigationBarBackgroundColor": "#ffffff",
+    "backgroundColor": "#f5f6fa"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#4A90D9",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/record/index",
+        "text": "记账",
+        "iconPath": "static/icons/tab-record.png",
+        "selectedIconPath": "static/icons/tab-record-active.png"
+      },
+      {
+        "pagePath": "pages/report/index",
+        "text": "报表",
+        "iconPath": "static/icons/tab-report.png",
+        "selectedIconPath": "static/icons/tab-report-active.png"
+      },
+      {
+        "pagePath": "pages/user/profile",
+        "text": "我的",
+        "iconPath": "static/icons/tab-user.png",
+        "selectedIconPath": "static/icons/tab-user-active.png"
+      }
+    ]
+  }
+}

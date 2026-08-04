@@ -1,0 +1,49 @@
+// uni-app 全局 SCSS 变量
+
+// 主题色
+$primary-color: #4A90D9;
+$primary-light: #6BA5E7;
+$primary-dark: #3A7BC8;
+
+// 功能色
+$income-color: #52C41A;
+$expense-color: #FF4D4F;
+$warning-color: #FAAD14;
+$info-color: #909399;
+
+// 背景色
+$bg-color: #f5f6fa;
+$bg-white: #ffffff;
+$bg-card: #ffffff;
+
+// 文字色
+$text-primary: #333333;
+$text-secondary: #666666;
+$text-hint: #999999;
+$text-white: #ffffff;
+
+// 边框
+$border-color: #eeeeee;
+
+// 圆角
+$radius-sm: 8rpx;
+$radius-md: 16rpx;
+$radius-lg: 24rpx;
+
+// 间距
+$spacing-xs: 8rpx;
+$spacing-sm: 16rpx;
+$spacing-md: 24rpx;
+$spacing-lg: 32rpx;
+$spacing-xl: 48rpx;
+
+// 字体
+$font-xs: 22rpx;
+$font-sm: 24rpx;
+$font-md: 28rpx;
+$font-lg: 32rpx;
+$font-xl: 36rpx;
+$font-xxl: 48rpx;
+
+// 安全区域
+$safe-area-bottom: env(safe-area-inset-bottom, 0);

@@ -1,0 +1,153 @@
+// ==================== 数据源 & 生成器 ====================
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// ==================== 枚举 ====================
+
+enum MemberRole {
+  OWNER
+  ADMIN
+  EDITOR
+  VIEWER
+}
+
+enum TransactionType {
+  INCOME
+  EXPENSE
+}
+
+enum BookType {
+  PERSONAL
+  FAMILY
+  TRAVEL
+  BUSINESS
+  OTHER
+}
+
+// ==================== 用户表 ====================
+
+model User {
+  id            Int       @id @default(autoincrement())
+  phone         String?   @unique @db.VarChar(20)
+  passwordHash  String?   @map("password_hash") @db.VarChar(255)
+  wechatOpenId  String?   @unique @map("wechat_openid") @db.VarChar(100)
+  wechatUnionId String?   @map("wechat_unionid") @db.VarChar(100)
+  nickname      String    @default("") @db.VarChar(50)
+  avatarUrl     String?   @map("avatar_url") @db.VarChar(500)
+  gender        Int       @default(0) @db.TinyInt
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  books          Book[]
+  memberships    BookMember[]
+  records        Record[]
+  refreshTokens  RefreshToken[]
+
+  @@map("users")
+}
+
+// ==================== 刷新令牌表 ====================
+
+model RefreshToken {
+  id        Int      @id @default(autoincrement())
+  token     String   @unique @db.VarChar(500)
+  userId    Int      @map("user_id")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime @map("expires_at")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([userId])
+  @@index([token])
+  @@map("refresh_tokens")
+}
+
+// ==================== 账本表 ====================
+
+model Book {
+  id          Int       @id @default(autoincrement())
+  name        String    @db.VarChar(50)
+  type        BookType  @default(PERSONAL)
+  coverIcon   String    @default("wallet") @map("cover_icon") @db.VarChar(50)
+  createdBy   Int       @map("created_by")
+  creator     User      @relation(fields: [createdBy], references: [id])
+  isDeleted   Boolean   @default(false) @map("is_deleted")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  members     BookMember[]
+  records     Record[]
+  categories  Category[]
+
+  @@map("books")
+}
+
+// ==================== 账本成员表 ====================
+
+model BookMember {
+  id       Int        @id @default(autoincrement())
+  bookId   Int        @map("book_id")
+  userId   Int        @map("user_id")
+  role     MemberRole @default(EDITOR)
+  joinedAt DateTime   @default(now()) @map("joined_at")
+
+  book     Book       @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  user     User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([bookId, userId])
+  @@index([userId])
+  @@index([bookId])
+  @@map("book_members")
+}
+
+// ==================== 收支分类表 ====================
+
+model Category {
+  id        Int             @id @default(autoincrement())
+  name      String          @db.VarChar(30)
+  type      TransactionType
+  icon      String          @default("") @db.VarChar(50)
+  parentId  Int?            @map("parent_id")
+  parent    Category?       @relation("CategoryHierarchy", fields: [parentId], references: [id])
+  children  Category[]      @relation("CategoryHierarchy")
+  sortOrder Int             @default(0) @map("sort_order")
+  isDefault Boolean         @default(true) @map("is_default")
+  bookId    Int?            @map("book_id")
+  book      Book?           @relation(fields: [bookId], references: [id], onDelete: Cascade)
+
+  records   Record[]
+
+  @@index([bookId])
+  @@index([type])
+  @@map("categories")
+}
+
+// ==================== 收支记录表 ====================
+
+model Record {
+  id           Int             @id @default(autoincrement())
+  bookId       Int             @map("book_id")
+  userId       Int             @map("user_id")
+  categoryId   Int             @map("category_id")
+  type         TransactionType
+  amount       Decimal         @db.Decimal(12, 2)
+  note         String?         @db.VarChar(200)
+  recordDate   DateTime        @map("record_date") @db.Date
+  isDeleted    Boolean         @default(false) @map("is_deleted")
+  createdAt    DateTime        @default(now()) @map("created_at")
+  updatedAt    DateTime        @updatedAt @map("updated_at")
+
+  book         Book            @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  user         User            @relation(fields: [userId], references: [id])
+  category     Category        @relation(fields: [categoryId], references: [id])
+
+  @@index([bookId, recordDate(sort: Desc)])
+  @@index([bookId, categoryId, recordDate])
+  @@index([userId])
+  @@map("records")
+}
