@@ -1,33 +1,36 @@
-// 收支分类缓存 — TTL + 全量拉取，本地按 type 筛选
+// 收支分类 — 前端直接使用 shared/constants 定义，无需后端请求
 
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
-import { categoryApi } from '@/api/category';
+import { ALL_DEFAULT_CATEGORIES } from '../../../shared/constants/categories';
 import type { Category } from '@/types/record';
 
-const CACHE_TTL = 30 * 60 * 1000; // 30 分钟
+/** 将 shared 常量映射为 Category 类型 */
+function toCategory(def: typeof ALL_DEFAULT_CATEGORIES[number]): Category {
+  return {
+    id: def.id,
+    name: def.name,
+    type: def.type,
+    icon: def.icon,
+    parentId: null,
+    sortOrder: def.sortOrder,
+    isDefault: true,
+  };
+}
+
+// 初始化时直接从常量构建，零网络开销
+const BUILTIN_CATEGORIES: Category[] = ALL_DEFAULT_CATEGORIES.map(toCategory);
 
 export const useCategoryStore = defineStore('category', () => {
-  const categories = ref<Category[]>([]);
-  const loaded = ref(false);
-  const lastFetchAt = ref<number>(0);
+  const categories = ref<Category[]>([...BUILTIN_CATEGORIES]);
+  const loaded = ref(true);
 
-  /** 检查缓存是否仍有效 */
-  function isCacheValid(): boolean {
-    return loaded.value && (Date.now() - lastFetchAt.value < CACHE_TTL);
-  }
-
-  /** 获取全部分类列表（带缓存，force=true 强制刷新） */
-  async function fetchCategories(force = false): Promise<void> {
-    if (!force && isCacheValid()) return;
-
-    try {
-      const res = await categoryApi.getList();
-      categories.value = res.data;
+  /** 兼容旧接口：直接 resolve，分类已内置 */
+  async function fetchCategories(_force = false): Promise<void> {
+    // 无需网络请求，分类数据已在常量中
+    if (!loaded.value) {
+      categories.value = [...BUILTIN_CATEGORIES];
       loaded.value = true;
-      lastFetchAt.value = Date.now();
-    } catch {
-      if (!loaded.value) throw new Error('获取分类失败');
     }
   }
 
@@ -45,7 +48,6 @@ export const useCategoryStore = defineStore('category', () => {
   return {
     categories,
     loaded,
-    lastFetchAt,
     expenseCategories,
     incomeCategories,
     fetchCategories,

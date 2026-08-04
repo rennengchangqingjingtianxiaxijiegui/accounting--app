@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { onLoad } from '@dcloudio/uni-app';
 import { recordApi } from '@/api/record';
 import { useRecord } from '@/composables/useRecord';
 import { useBookStore } from '@/store/book';

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { onShow } from '@dcloudio/uni-app';
 import { useRecord } from '@/composables/useRecord';
 import { useBookStore } from '@/store/book';
 import { useCategoryStore } from '@/store/category';
@@ -30,10 +31,14 @@ function getYearMonthStr(d: Date): string {
 }
 
 async function loadData() {
-  await Promise.all([
-    fetchRecords(),
-    categoryStore.fetchCategories(),
-  ]);
+  try {
+    await Promise.all([
+      fetchRecords(),
+      categoryStore.fetchCategories(),
+    ]);
+  } catch {
+    // 静默失败，页面显示空列表
+  }
 }
 
 onShow(async () => {
@@ -41,7 +46,7 @@ onShow(async () => {
   if (bookStore.books.length === 0) {
     await bookStore.fetchBooks().catch(() => {});
   }
-  if (bookStore.activeBookId) loadData();
+  if (bookStore.activeBookId) await loadData();
 });
 
 function onRefresh() {

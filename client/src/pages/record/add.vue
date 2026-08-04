@@ -60,6 +60,10 @@ function inputClear() {
   amount.value = '';
 }
 
+function onDateChange(e: { detail: { value: string } }) {
+  recordDate.value = e.detail.value;
+}
+
 // 提交
 async function handleSubmit() {
   const amt = parseFloat(amount.value);
@@ -148,7 +152,7 @@ onMounted(() => {
           mode="date"
           :value="recordDate"
           :end="getToday()"
-          @change="(e: any) => recordDate = e.detail.value"
+          @change="onDateChange"
         >
           <view class="date-picker">
             <text>{{ recordDate }}</text>
@@ -165,10 +169,7 @@ onMounted(() => {
           v-for="key in row"
           :key="key"
           class="keypad-key"
-          :class="{
-            'key-func': key === '⌫' || key === '.',
-            'key-submit': key === '保存' ,
-          }"
+          :class="{ 'key-func': key === '⌫' || key === '.' }"
           @click="key === '⌫' ? inputDelete() : inputDigit(key)"
         >
           <text>{{ key === '⌫' ? '⌫' : key }}</text>

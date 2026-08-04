@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { onLoad } from '@dcloudio/uni-app';
 import { useBook } from '@/composables/useBook';
 import { MemberRoleLabels } from '@/types/book';
 import type { BookMember, MemberRole } from '@/types/book';

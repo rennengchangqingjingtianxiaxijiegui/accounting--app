@@ -1,6 +1,7 @@
 <script setup lang="ts">
 // 收支趋势 — 按日展示收入/支出柱状对比
 import { ref, computed } from 'vue';
+import { onLoad } from '@dcloudio/uni-app';
 import { reportApi } from '@/api/report';
 import { useBookStore } from '@/store/book';
 import type { TrendItem } from '@/types/report';

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 // 分类占比 — 支出/收入分类饼图替代方案（百分比条形图）
 import { ref } from 'vue';
+import { onLoad } from '@dcloudio/uni-app';
 import { reportApi } from '@/api/report';
 import { useBookStore } from '@/store/book';
 import { getCategoryIcon } from '@/utils/categoryIcons';

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { onLoad } from '@dcloudio/uni-app';
 import { useRecord } from '@/composables/useRecord';
 import { useCategoryStore } from '@/store/category';
 import { recordApi } from '@/api/record';
@@ -108,6 +109,10 @@ function getToday(): string {
   const d = new Date();
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 }
+
+function onDateChange(e: { detail: { value: string } }) {
+  recordDate.value = e.detail.value;
+}
 </script>
 
 <template>
@@ -140,7 +145,7 @@ function getToday(): string {
 
       <view class="form-row" style="margin-top: 24rpx;">
         <text class="form-label">日期</text>
-        <picker mode="date" :value="recordDate" :end="getToday()" @change="(e: any) => recordDate = e.detail.value">
+        <picker mode="date" :value="recordDate" :end="getToday()" @change="onDateChange">
           <view class="date-picker">
             <text>{{ recordDate }}</text>
             <u-icon name="calendar" size="36" color="#999" />

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { onLoad } from '@dcloudio/uni-app';
 import { useBook } from '@/composables/useBook';
 import { BookTypeLabels } from '@/types/book';
 import type { BookType } from '@/types/book';

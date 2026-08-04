@@ -39,7 +39,7 @@ model User {
   wechatOpenId  String?   @unique @map("wechat_openid") @db.VarChar(100)
   wechatUnionId String?   @map("wechat_unionid") @db.VarChar(100)
   nickname      String    @default("") @db.VarChar(50)
-  avatarUrl     String?   @map("avatar_url") @db.VarChar(500)
+  avatarUrl     String?   @map("avatar_url") @db.Text
   gender        Int       @default(0) @db.TinyInt
   createdAt     DateTime  @default(now()) @map("created_at")
   updatedAt     DateTime  @updatedAt @map("updated_at")

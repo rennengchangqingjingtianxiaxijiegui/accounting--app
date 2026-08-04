@@ -56,7 +56,8 @@ export function useRecord() {
 
   /** 添加记录（乐观更新） */
   async function addRecord(data: CreateRecordParams): Promise<RecordItem> {
-    const res = await recordApi.create(activeBookId.value!, data);
+    if (!activeBookId.value) throw new Error('请先选择账本');
+    const res = await recordApi.create(activeBookId.value, data);
     // 插入到列表头部（列表按日期降序，新记录通常日期最新）
     records.value.unshift(res.data);
     return res.data;
@@ -64,7 +65,8 @@ export function useRecord() {
 
   /** 更新记录 */
   async function updateRecord(recordId: number, data: UpdateRecordParams): Promise<RecordItem> {
-    const res = await recordApi.update(activeBookId.value!, recordId, data);
+    if (!activeBookId.value) throw new Error('请先选择账本');
+    const res = await recordApi.update(activeBookId.value, recordId, data);
     // 原地更新列表中的记录
     const idx = records.value.findIndex((r) => r.id === recordId);
     if (idx >= 0) records.value[idx] = res.data;
@@ -73,7 +75,8 @@ export function useRecord() {
 
   /** 删除记录 */
   async function deleteRecord(recordId: number): Promise<void> {
-    await recordApi.remove(activeBookId.value!, recordId);
+    if (!activeBookId.value) throw new Error('请先选择账本');
+    await recordApi.remove(activeBookId.value, recordId);
     records.value = records.value.filter((r) => r.id !== recordId);
   }
 

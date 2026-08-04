@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { onShow } from '@dcloudio/uni-app';
 import { useBook } from '@/composables/useBook';
 import { BookTypeLabels, MemberRoleLabels } from '@/types/book';
 import type { Book, MemberRole } from '@/types/book';
@@ -133,15 +134,9 @@ function canManage(book: Book): boolean {
       </view>
     </scroll-view>
 
-    <!-- 创建按钮 -->
-    <view class="fab-area">
-      <u-button
-        type="primary"
-        icon="plus"
-        shape="circle"
-        customStyle="width: 112rpx; height: 112rpx;"
-        @click="goToCreate"
-      />
+    <!-- 创建按钮 FAB -->
+    <view class="fab-btn" @click="goToCreate">
+      <text class="fab-icon">+</text>
     </view>
 
     <!-- 删除确认弹窗 -->
@@ -267,10 +262,24 @@ function canManage(book: Book): boolean {
   }
 }
 
-.fab-area {
+.fab-btn {
   position: fixed;
   right: 40rpx;
   bottom: 80rpx;
+  width: 112rpx;
+  height: 112rpx;
+  background: $primary-color;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8rpx 24rpx rgba(74, 144, 217, 0.35);
   z-index: 100;
+
+  .fab-icon {
+    font-size: 56rpx;
+    color: #fff;
+    line-height: 1;
+  }
 }
 </style>

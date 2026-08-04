@@ -7,7 +7,7 @@ export const updateProfileSchema = z.object({
     .optional(),
   avatarUrl: z
     .string()
-    .max(500, '头像URL过长')
+    .max(5000, '头像URL过长')
     .optional(),
   gender: z
     .number()

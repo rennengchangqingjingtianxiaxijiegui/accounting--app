@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
+import { onShow } from '@dcloudio/uni-app';
 import { reportApi } from '@/api/report';
 import { useBookStore } from '@/store/book';
 import NavBar from '@/components/NavBar.vue';
