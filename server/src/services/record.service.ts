@@ -123,7 +123,7 @@ export class RecordService {
    * 编辑记录 — 需 EDITOR+，仅本人或 ADMIN/OWNER 可编辑他人记录
    */
   async update(recordId: number, bookId: number, userId: number, data: UpdateRecordInput) {
-    const membership = await this.requireRole(bookId, userId, MemberRole.EDITOR);
+    const membership = await this.requireMembership(bookId, userId);
 
     const record = await this.prisma.record.findFirst({
       where: { id: recordId, bookId, isDeleted: false },
@@ -166,7 +166,7 @@ export class RecordService {
    * 删除记录（软删除）— 需 EDITOR+，仅本人或 ADMIN/OWNER 可删除他人记录
    */
   async delete(recordId: number, bookId: number, userId: number) {
-    const membership = await this.requireRole(bookId, userId, MemberRole.EDITOR);
+    const membership = await this.requireMembership(bookId, userId);
 
     const record = await this.prisma.record.findFirst({
       where: { id: recordId, bookId, isDeleted: false },
