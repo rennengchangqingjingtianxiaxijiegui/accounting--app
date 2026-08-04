@@ -18,7 +18,6 @@ export interface LoginParams {
 export interface RegisterParams {
   phone: string;
   password: string;
-  code: string;
 }
 
 export interface AuthTokens {

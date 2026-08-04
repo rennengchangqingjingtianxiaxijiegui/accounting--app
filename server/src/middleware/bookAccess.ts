@@ -1,9 +1,8 @@
 // 账本成员角色权限校验中间件工厂
 import { Request, Response, NextFunction } from 'express';
-import { PrismaClient, MemberRole } from '@prisma/client';
+import { MemberRole } from '@prisma/client';
+import { prisma } from '../db';
 import { PermissionError, NotFoundError } from '../utils/errors';
-
-const prisma = new PrismaClient();
 
 /**
  * 校验当前用户是指定账本的成员，且角色在允许列表中

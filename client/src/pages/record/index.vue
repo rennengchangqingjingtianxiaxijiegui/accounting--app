@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onShow } from 'vue';
+import { ref } from 'vue';
 import { useRecord } from '@/composables/useRecord';
 import { useBookStore } from '@/store/book';
 import { useCategoryStore } from '@/store/category';
@@ -36,7 +36,11 @@ async function loadData() {
   ]);
 }
 
-onShow(() => {
+onShow(async () => {
+  // 确保账本列表已加载并选中
+  if (bookStore.books.length === 0) {
+    await bookStore.fetchBooks().catch(() => {});
+  }
   if (bookStore.activeBookId) loadData();
 });
 

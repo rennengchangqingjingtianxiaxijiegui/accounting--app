@@ -1,8 +1,6 @@
 import { createApp } from './app';
 import { config } from './config';
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { prisma } from './db';
 
 async function main() {
   const app = createApp();

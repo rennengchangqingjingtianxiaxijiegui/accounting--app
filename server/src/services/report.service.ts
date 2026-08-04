@@ -95,7 +95,7 @@ export class ReportService {
   /** 分类占比：按分类聚合金额，计算百分比 */
   async getCategory(bookId: number, userId: number, query: ReportQuery): Promise<CategoryItem[]> {
     await this.requireMembership(bookId, userId);
-    if (!query.type) query.type = 'EXPENSE';
+    const recordType: 'INCOME' | 'EXPENSE' = query.type || 'EXPENSE';
     const { startDate, endDate } = this.resolveDateRange(query);
 
     const result = await this.prisma.record.groupBy({
@@ -103,7 +103,7 @@ export class ReportService {
       where: {
         bookId,
         isDeleted: false,
-        type: query.type as any,
+        type: recordType as any,
         recordDate: { gte: startDate, lte: endDate },
       },
       _sum: { amount: true },

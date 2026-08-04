@@ -4,7 +4,6 @@ export interface SummaryData {
   income: string;
   expense: string;
   balance: string;
-  recordCount: number;
 }
 
 export interface TrendItem {
@@ -16,10 +15,9 @@ export interface TrendItem {
 export interface CategoryBreakdown {
   categoryId: number;
   categoryName: string;
-  categoryIcon: string;
+  icon: string;
   amount: string;
   percent: number;
-  count: number;
 }
 
 export interface ReportQuery {

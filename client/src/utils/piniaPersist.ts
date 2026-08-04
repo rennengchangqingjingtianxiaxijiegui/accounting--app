@@ -35,7 +35,7 @@ export function createPersistPlugin() {
         const parsed = JSON.parse(raw);
 
         // 版本号校验：版本不匹配则丢弃旧缓存
-        if (config.version && parsed.__v !== config.version) {
+        if (config.version && parsed.__version !== config.version) {
           storage.remove(config.key);
         } else if (parsed.__ts && Date.now() - parsed.__ts > CACHE_TTL) {
           // 缓存过期，仅对 categoryStore 这类失效成本低的做清理
@@ -86,13 +86,13 @@ export function createPersistPlugin() {
 
 export function setupPersistConfigs() {
   registerPersist('auth', {
-    key: STORAGE_KEYS.ACCESS_TOKEN,
+    key: STORAGE_KEYS.AUTH_PERSIST,
     pick: ['accessToken', 'refreshToken', 'user'],
     version: 1,
   });
 
   registerPersist('book', {
-    key: STORAGE_KEYS.ACTIVE_BOOK_ID,
+    key: STORAGE_KEYS.BOOK_PERSIST,
     pick: ['activeBookId'],
     version: 1,
   });

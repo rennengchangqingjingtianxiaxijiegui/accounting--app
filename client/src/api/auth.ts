@@ -29,11 +29,6 @@ export const authApi = {
     return http.post('/auth/logout', { refreshToken });
   },
 
-  /** 发送短信验证码 */
-  sendSms(phone: string): Promise<ApiResponse<null>> {
-    return http.post('/auth/send-sms', { phone });
-  },
-
   /** 获取当前用户信息 */
   getProfile(): Promise<ApiResponse<User>> {
     return http.get('/user/profile');

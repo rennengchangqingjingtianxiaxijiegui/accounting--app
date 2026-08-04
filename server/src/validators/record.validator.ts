@@ -25,9 +25,12 @@ export const updateRecordSchema = z.object({
   recordDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, '日期格式应为 YYYY-MM-DD').optional(),
 });
 
-// 游标分页 + 筛选查询参数（query string 均为 string，用 z.coerce 转换）
+// 游标分页 + 筛选查询参数（query string 均为 string）
+// cursor 为复合键：recordDate_id，如 "2024-06-15_123"
+const CURSOR_REG = /^\d{4}-\d{2}-\d{2}_\d+$/;
+
 export const recordQuerySchema = z.object({
-  cursor: z.coerce.number().int().positive().optional(),
+  cursor: z.string().regex(CURSOR_REG, '分页游标格式无效').optional(),
   limit: z.coerce.number().int().min(1).max(50).default(20),
   startDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
   endDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),

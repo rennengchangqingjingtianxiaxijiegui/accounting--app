@@ -51,7 +51,7 @@ export interface UpdateRecordParams {
 
 // 游标分页查询参数
 export interface RecordFilter {
-  cursor?: number;     // 上一页最后一条的 id
+  cursor?: string;     // 复合游标：recordDate_id，如 "2024-06-15_123"
   limit?: number;      // 每页条数，默认 20
   startDate?: string;  // YYYY-MM-DD
   endDate?: string;    // YYYY-MM-DD
@@ -62,6 +62,6 @@ export interface RecordFilter {
 // 游标分页响应
 export interface PaginatedRecords {
   list: RecordItem[];
-  nextCursor: number | null;
+  nextCursor: string | null;
   hasMore: boolean;
 }

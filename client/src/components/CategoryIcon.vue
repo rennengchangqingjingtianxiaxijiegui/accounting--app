@@ -1,20 +1,10 @@
 <script setup lang="ts">
-// 分类图标 — 根据 icon 名称映射 emoji
+import { CATEGORY_ICON_MAP } from '@/utils/categoryIcons';
+
 defineProps<{
   icon: string;
   size?: 'sm' | 'md' | 'lg';
 }>();
-
-const iconMap: Record<string, string> = {
-  food: '🍜', transport: '🚌', shopping: '🛒', clothing: '👗',
-  housing: '🏠', beauty: '💄', sport: '⚽', travel: '✈️',
-  medical: '💊', education: '📚', telecom: '📱', entertainment: '🎮',
-  digital: '💻', pet: '🐶', social: '🎁', other: '📦',
-  other_expense: '📦',
-  salary: '💰', bonus: '🏆', invest: '📈', parttime: '🔧',
-  redpacket: '🧧', reimburse: '💵', refund: '↩️',
-  other_income: '📦',
-};
 </script>
 
 <template>
@@ -22,7 +12,7 @@ const iconMap: Record<string, string> = {
     class="cat-icon"
     :class="[`size-${size || 'md'}`]"
   >
-    <text class="emoji">{{ iconMap[icon] || '📌' }}</text>
+    <text class="emoji">{{ CATEGORY_ICON_MAP[icon] || '📌' }}</text>
   </view>
 </template>
 

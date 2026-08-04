@@ -1,10 +1,8 @@
 import { Router } from 'express';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '../db';
 import { CategoryService } from '../services/category.service';
 import { CategoryController } from '../controllers/category.controller';
 import { auth } from '../middleware/auth';
-
-const prisma = new PrismaClient();
 const categoryService = new CategoryService(prisma);
 const categoryController = new CategoryController(categoryService);
 

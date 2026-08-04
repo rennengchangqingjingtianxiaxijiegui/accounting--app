@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onLoad } from 'vue';
+import { ref } from 'vue';
 import { useRecord } from '@/composables/useRecord';
 import { useCategoryStore } from '@/store/category';
 import { recordApi } from '@/api/record';

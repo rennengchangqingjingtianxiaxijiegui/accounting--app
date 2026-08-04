@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { useCategoryStore } from '@/store/category';
+import { getCategoryIcon } from '@/utils/categoryIcons';
 import type { Category, RecordType } from '@/types/record';
 
 const props = defineProps<{
@@ -19,31 +20,13 @@ const categories = computed(() =>
   props.type === 'INCOME' ? store.incomeCategories : store.expenseCategories,
 );
 
-// 图标 emoji 映射
-const iconMap: Record<string, string> = {
-  food: '🍜', transport: '🚌', shopping: '🛒', clothing: '👗',
-  housing: '🏠', beauty: '💄', sport: '⚽', travel: '✈️',
-  medical: '💊', education: '📚', telecom: '📱', entertainment: '🎮',
-  digital: '💻', pet: '🐶', social: '🎁', other: '📦',
-  other_expense: '📦',
-  salary: '💰', bonus: '🏆', invest: '📈', parttime: '🔧',
-  redpacket: '🧧', reimburse: '💵', refund: '↩️',
-  other_income: '📦',
-};
-
-function getIcon(cat: Category): string {
-  return iconMap[cat.icon] || '📌';
-}
-
 function select(cat: Category) {
   emit('update:modelValue', cat);
   show.value = false;
 }
 
 function open() {
-  if (categories.value.length === 0) {
-    store.fetchCategories(props.type);
-  }
+  store.fetchCategories();
   show.value = true;
 }
 </script>
@@ -52,7 +35,7 @@ function open() {
   <view>
     <view class="trigger" @click="open">
       <template v-if="modelValue">
-        <text class="trigger-emoji">{{ getIcon(modelValue) }}</text>
+        <text class="trigger-emoji">{{ getCategoryIcon(modelValue.icon) }}</text>
         <text class="trigger-name">{{ modelValue.name }}</text>
       </template>
       <template v-else>
@@ -78,7 +61,7 @@ function open() {
             @click="select(cat)"
           >
             <view class="picker-icon">
-              <text class="picker-emoji">{{ getIcon(cat) }}</text>
+              <text class="picker-emoji">{{ getCategoryIcon(cat.icon) }}</text>
             </view>
             <text class="picker-label">{{ cat.name }}</text>
           </view>

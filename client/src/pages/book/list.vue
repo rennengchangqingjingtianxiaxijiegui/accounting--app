@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onShow } from 'vue';
+import { ref } from 'vue';
 import { useBook } from '@/composables/useBook';
 import { BookTypeLabels, MemberRoleLabels } from '@/types/book';
 import type { Book, MemberRole } from '@/types/book';
@@ -18,7 +18,7 @@ function goToCreate() {
 
 function goToEdit(book: Book) {
   uni.navigateTo({
-    url: `/pages/book/create?id=${book.id}&name=${encodeURIComponent(book.name)}&type=${book.type}`,
+    url: `/pages/book/create?id=${book.id}&name=${encodeURIComponent(book.name)}&type=${book.type}&coverIcon=${book.coverIcon || 'wallet'}`,
   });
 }
 

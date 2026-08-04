@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue';
 import { recordApi } from '@/api/record';
 import { useBookStore } from '@/store/book';
+import { getCategoryIcon } from '@/utils/categoryIcons';
 import type { RecordItem, CreateRecordParams, UpdateRecordParams, RecordFilter } from '@/types/record';
 
 export function useRecord() {
@@ -9,7 +10,7 @@ export function useRecord() {
   const records = ref<RecordItem[]>([]);
   const loading = ref(false);
   const hasMore = ref(true);
-  const nextCursor = ref<number | null>(null);
+  const nextCursor = ref<string | null>(null);
   const error = ref<string | null>(null);
 
   const activeBookId = computed(() => bookStore.activeBookId);
@@ -139,19 +140,6 @@ export function useRecord() {
       balance: (income - expense).toFixed(2),
     };
   });
-
-  /** 根据分类 icon 名称查找 emoji */
-  function getCategoryIcon(icon: string): string {
-    const map: Record<string, string> = {
-      food: '🍜', transport: '🚌', shopping: '🛒', clothing: '👗',
-      housing: '🏠', beauty: '💄', sport: '⚽', travel: '✈️',
-      medical: '💊', education: '📚', telecom: '📱', entertainment: '🎮',
-      digital: '💻', pet: '🐶', social: '🎁', other: '📦',
-      salary: '💰', bonus: '🏆', invest: '📈', parttime: '🔧',
-      redpacket: '🧧', reimburse: '💵', refund: '↩️',
-    };
-    return map[icon] || '📌';
-  }
 
   return {
     // 状态

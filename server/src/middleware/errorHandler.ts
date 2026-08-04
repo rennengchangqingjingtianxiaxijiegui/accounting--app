@@ -13,9 +13,9 @@ export function errorHandler(
 ): void {
   console.error(`[Error] ${err.name}: ${err.message}`);
 
-  // 已知的业务错误
+  // 已知的业务错误 — 使用正确的 HTTP 状态码
   if (err instanceof AppError) {
-    fail(res, err.code, err.message);
+    fail(res, err.code, err.message, null, err.statusCode);
     return;
   }
 

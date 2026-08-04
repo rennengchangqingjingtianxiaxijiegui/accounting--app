@@ -1,5 +1,6 @@
 import { Router } from 'express';
-import { PrismaClient, MemberRole } from '@prisma/client';
+import { MemberRole } from '@prisma/client';
+import { prisma } from '../db';
 import { BookService } from '../services/book.service';
 import { BookController } from '../controllers/book.controller';
 import { auth } from '../middleware/auth';
@@ -11,8 +12,6 @@ import {
   addMemberSchema,
   updateMemberSchema,
 } from '../validators/book.validator';
-
-const prisma = new PrismaClient();
 const bookService = new BookService(prisma);
 const bookController = new BookController(bookService);
 

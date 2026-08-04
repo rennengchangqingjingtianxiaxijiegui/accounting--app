@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onLoad } from 'vue';
+import { ref } from 'vue';
 import { useBook } from '@/composables/useBook';
 import { MemberRoleLabels } from '@/types/book';
 import type { BookMember, MemberRole } from '@/types/book';

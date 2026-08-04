@@ -140,8 +140,8 @@ describe('RecordService', () => {
       expect(result.nextCursor).toBeNull();
     });
 
-    it('hasMore=true 时返回 limit 条记录，nextCursor 指向最后一条 id', async () => {
-      const records = Array.from({ length: 21 }, (_, i) => record({ id: i + 1 }));
+    it('hasMore=true 时返回 limit 条记录，nextCursor 为复合游标', async () => {
+      const records = Array.from({ length: 21 }, (_, i) => record({ id: i + 1, recordDate: new Date('2026-08-01') }));
       const prisma = mockPrisma({
         bookMember: {
           findUnique: jest.fn().mockResolvedValue(member(MemberRole.EDITOR)),
@@ -154,7 +154,7 @@ describe('RecordService', () => {
 
       expect(result.list).toHaveLength(20);
       expect(result.hasMore).toBe(true);
-      expect(result.nextCursor).toBe(20);
+      expect(result.nextCursor).toBe('2026-08-01_20');
     });
 
     it('按类型筛选', async () => {

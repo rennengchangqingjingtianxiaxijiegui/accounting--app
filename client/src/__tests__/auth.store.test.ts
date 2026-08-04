@@ -18,6 +18,8 @@ vi.mock('@/utils/storage', () => ({
     USER_INFO: 'user_info',
     ACTIVE_BOOK_ID: 'active_book_id',
     CATEGORY_CACHE: 'category_cache',
+    AUTH_PERSIST: 'auth_persist',
+    BOOK_PERSIST: 'book_persist',
   },
 }));
 
@@ -139,13 +141,12 @@ describe('AuthStore', () => {
       mockRegister.mockResolvedValueOnce({ data: mockLoginResult });
 
       const store = useAuthStore();
-      await store.register({ phone: '13800138000', password: 'Test123', code: '1234' });
+      await store.register({ phone: '13800138000', password: 'Test123' });
 
       expect(store.isLoggedIn).toBe(true);
       expect(mockRegister).toHaveBeenCalledWith({
         phone: '13800138000',
         password: 'Test123',
-        code: '1234',
       });
     });
   });

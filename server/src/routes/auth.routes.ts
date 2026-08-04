@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '../db';
 import { AuthService } from '../services/auth.service';
 import { AuthController } from '../controllers/auth.controller';
 import { validate } from '../middleware/validate';
@@ -11,8 +11,6 @@ import {
   refreshTokenSchema,
   logoutSchema,
 } from '../validators/auth.validator';
-
-const prisma = new PrismaClient();
 const authService = new AuthService(prisma);
 const authController = new AuthController(authService);
 

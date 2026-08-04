@@ -1,10 +1,8 @@
 // JWT 认证中间件
 import { Request, Response, NextFunction } from 'express';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '../db';
 import { verifyAccessToken } from '../utils/jwt';
 import { AuthError } from '../utils/errors';
-
-const prisma = new PrismaClient();
 
 export async function auth(req: Request, _res: Response, next: NextFunction): Promise<void> {
   try {

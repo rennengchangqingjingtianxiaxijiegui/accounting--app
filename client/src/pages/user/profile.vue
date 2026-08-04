@@ -69,7 +69,7 @@ function getGenderLabel(gender: number): string {
   return item?.label || '未知';
 }
 
-function formatPhone(phone: string | null): string {
+function formatPhone(phone: string | null | undefined): string {
   if (!phone) return '未绑定';
   return phone.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2');
 }

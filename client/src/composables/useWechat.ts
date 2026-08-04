@@ -52,7 +52,7 @@ export function useWechat() {
    * 获取微信用户信息（头像/昵称）
    * 小程序需要 userInfo 隐私协议授权
    */
-  async function getUserProfile(): Promise<WechatMiniprogram.GetUserProfileSuccessCallbackResult | null> {
+  async function getUserProfile(): Promise<UniNamespace.GetUserProfileRes | null> {
     // #ifdef MP-WEIXIN
     try {
       const res = await uni.getUserProfile({ desc: '用于完善用户资料' });

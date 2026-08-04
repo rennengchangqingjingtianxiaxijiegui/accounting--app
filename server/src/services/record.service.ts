@@ -2,14 +2,32 @@ import { PrismaClient, MemberRole, Prisma } from '@prisma/client';
 import { NotFoundError, PermissionError, ValidationError } from '../utils/errors';
 import type { CreateRecordInput, UpdateRecordInput, RecordQueryInput } from '../validators/record.validator';
 
+// 复合游标：recordDate_id
+// Prisma Date-only 字段在 JS 中是 Date 类型，用 toISOString 截取日期部分
+function toDateStr(d: Date): string {
+  return d.toISOString().slice(0, 10);
+}
+
+function parseCursor(cursor: string): { recordDate: Date; id: number } | null {
+  const idx = cursor.lastIndexOf('_');
+  if (idx < 0) return null;
+  const dateStr = cursor.slice(0, idx);
+  const idStr = cursor.slice(idx + 1);
+  const date = new Date(dateStr);
+  if (isNaN(date.getTime())) return null;
+  return { recordDate: date, id: parseInt(idStr, 10) };
+}
+
 export class RecordService {
   constructor(private prisma: PrismaClient) {}
 
   // ==================== 记录查询 ====================
 
   /**
-   * 游标分页查询记录列表，支持日期范围/类型/分类筛选
-   * 按 recordDate DESC + id DESC 排序，limit+1 判断 hasMore
+   * 复合键游标分页查询记录列表
+   * 排序：(recordDate DESC, id DESC)
+   * 游标格式：`recordDate_id`（如 "2024-06-15_123"）
+   * 使用 keyset 分页避免回填/未来日期记录漂移
    */
   async getList(bookId: number, userId: number, query: RecordQueryInput) {
     await this.requireMembership(bookId, userId);
@@ -22,9 +40,15 @@ export class RecordService {
       isDeleted: false,
     };
 
-    // 游标：id 小于上次最后一条的 id
+    // 复合游标 keyset：`(recordDate < cursorDate) OR (recordDate = cursorDate AND id < cursorId)`
     if (cursor) {
-      where.id = { lt: cursor };
+      const parsed = parseCursor(cursor as string);
+      if (parsed) {
+        where.OR = [
+          { recordDate: { lt: parsed.recordDate } },
+          { recordDate: parsed.recordDate, id: { lt: parsed.id } },
+        ];
+      }
     }
 
     // 日期范围
@@ -53,7 +77,8 @@ export class RecordService {
 
     const hasMore = records.length > limit;
     const list = hasMore ? records.slice(0, limit) : records;
-    const nextCursor = hasMore ? list[list.length - 1].id : null;
+    const last = list[list.length - 1];
+    const nextCursor = hasMore && last ? `${toDateStr(last.recordDate)}_${last.id}` : null;
 
     return {
       list: list.map((r) => ({

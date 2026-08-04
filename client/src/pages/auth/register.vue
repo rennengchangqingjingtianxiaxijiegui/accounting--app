@@ -4,7 +4,7 @@ import { useAuthStore } from '@/store/auth';
 import { isPhone, isPassword } from '@/utils/validator';
 
 const authStore = useAuthStore();
-const form = ref({ phone: '', password: '', confirmPassword: '', code: '' });
+const form = ref({ phone: '', password: '', confirmPassword: '' });
 const loading = ref(false);
 const errors = ref({ phone: '', password: '', confirmPassword: '' });
 
@@ -43,7 +43,6 @@ async function handleRegister() {
     await authStore.register({
       phone: form.value.phone,
       password: form.value.password,
-      code: form.value.code || '000000',
     });
     uni.showToast({ title: '注册成功', icon: 'success' });
     setTimeout(() => {

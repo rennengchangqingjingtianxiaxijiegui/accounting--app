@@ -212,21 +212,13 @@ onMounted(() => {
     transition: all 0.2s;
 
     &.active {
-      background: $primary-color;
       color: #fff;
       font-weight: 600;
 
-      // 支出红色，收入绿色
-      :deep(&) when (activeType: 'EXPENSE') {
-        background: $expense-color;
-      }
+      &.is-expense { background: $expense-color; }
+      &.is-income { background: $income-color; }
     }
   }
-}
-
-.type-tab.active {
-  &.is-expense { background: $expense-color; }
-  &.is-income { background: $income-color; }
 }
 
 .amount-display {

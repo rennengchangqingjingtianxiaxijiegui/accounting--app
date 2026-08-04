@@ -44,4 +44,6 @@ export const STORAGE_KEYS = {
   USER_INFO: 'user_info',
   ACTIVE_BOOK_ID: 'active_book_id',
   CATEGORY_CACHE: 'category_cache',
+  AUTH_PERSIST: 'auth_persist',
+  BOOK_PERSIST: 'book_persist',
 } as const;

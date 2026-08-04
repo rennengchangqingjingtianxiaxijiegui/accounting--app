@@ -1,13 +1,11 @@
 import { Router } from 'express';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '../db';
 import { ReportService } from '../services/report.service';
 import { ReportController } from '../controllers/report.controller';
 import { auth } from '../middleware/auth';
 import { requireRole } from '../middleware/bookAccess';
 import { validate } from '../middleware/validate';
 import { reportQuerySchema } from '../validators/report.validator';
-
-const prisma = new PrismaClient();
 const reportService = new ReportService(prisma);
 const reportController = new ReportController(reportService);
 

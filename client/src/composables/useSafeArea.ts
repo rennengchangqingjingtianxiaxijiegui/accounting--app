@@ -26,11 +26,9 @@ export function useSafeArea(): SafeAreaInfo {
   const isNotch = statusBarHeight > 30;
 
   // 导航栏内容区默认 44px (H5: 50px)
+  let navBarHeight = 44;
   // #ifdef H5
-  const navBarHeight = 50;
-  // #endif
-  // #ifndef H5
-  const navBarHeight = 44;
+  navBarHeight = 50;
   // #endif
 
   // 底部安全区高度

@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { ref, onLoad } from 'vue';
+import { ref } from 'vue';
 import { recordApi } from '@/api/record';
 import { useRecord } from '@/composables/useRecord';
 import { useBookStore } from '@/store/book';
 import CategoryIcon from '@/components/CategoryIcon.vue';
+import { getCategoryIcon } from '@/utils/categoryIcons';
 import type { RecordItem } from '@/types/record';
 
 const { deleteRecord } = useRecord();
@@ -44,19 +45,6 @@ async function handleDelete() {
   } finally {
     showDeleteModal.value = false;
   }
-}
-
-function getCategoryIcon(icon: string): string {
-  const map: Record<string, string> = {
-    food: '🍜', transport: '🚌', shopping: '🛒', clothing: '👗',
-    housing: '🏠', beauty: '💄', sport: '⚽', travel: '✈️',
-    medical: '💊', education: '📚', telecom: '📱', entertainment: '🎮',
-    digital: '💻', pet: '🐶', social: '🎁', other: '📦',
-    other_expense: '📦',
-    salary: '💰', bonus: '🏆', invest: '📈', parttime: '🔧',
-    redpacket: '🧧', reimburse: '💵', refund: '↩️', other_income: '📦',
-  };
-  return map[icon] || '📌';
 }
 
 function fmtDate(dateStr: string): string {

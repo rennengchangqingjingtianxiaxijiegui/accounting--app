@@ -1,13 +1,12 @@
 import { Router } from 'express';
-import { PrismaClient, MemberRole } from '@prisma/client';
+import { MemberRole } from '@prisma/client';
+import { prisma } from '../db';
 import { RecordService } from '../services/record.service';
 import { RecordController } from '../controllers/record.controller';
 import { auth } from '../middleware/auth';
 import { requireRole } from '../middleware/bookAccess';
 import { validate } from '../middleware/validate';
 import { createRecordSchema, updateRecordSchema, recordQuerySchema } from '../validators/record.validator';
-
-const prisma = new PrismaClient();
 const recordService = new RecordService(prisma);
 const recordController = new RecordController(recordService);
 
