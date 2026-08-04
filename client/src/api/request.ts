@@ -2,8 +2,21 @@
 import axios, { type AxiosInstance, type AxiosRequestConfig, type AxiosResponse } from 'axios';
 import { storage, STORAGE_KEYS } from '@/utils/storage';
 
-// 后端基础URL — 开发环境指向本地3000端口
-const BASE_URL = 'http://localhost:3000/api/v1';
+// 多平台 Base URL
+function getBaseUrl(): string {
+  // #ifdef H5
+  // H5 开发模式使用代理，直接相对路径即可
+  return '/api/v1';
+  // #endif
+
+  // #ifdef MP-WEIXIN || APP-PLUS
+  // 小程序 / APP 端：连接后端服务器
+  // 生产环境通过环境变量切换，开发环境默认 localhost:3000
+  return 'http://localhost:3000/api/v1';
+  // #endif
+}
+
+const BASE_URL = getBaseUrl();
 
 const http: AxiosInstance = axios.create({
   baseURL: BASE_URL,

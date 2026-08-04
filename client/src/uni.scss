@@ -47,3 +47,9 @@ $font-xxl: 48rpx;
 
 // 安全区域
 $safe-area-bottom: env(safe-area-inset-bottom, 0);
+$safe-area-top: env(safe-area-inset-top, 0);
+
+// 状态栏高度（各平台静态兜底，实际运行时由 useSafeArea 动态获取）
+$status-bar-height: 44px;   // iOS 默认
+$nav-bar-height: 44px;      // 导航栏内容区高度
+$header-height: calc(#{$status-bar-height} + #{$nav-bar-height});

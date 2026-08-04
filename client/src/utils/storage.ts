@@ -43,4 +43,5 @@ export const STORAGE_KEYS = {
   REFRESH_TOKEN: 'refresh_token',
   USER_INFO: 'user_info',
   ACTIVE_BOOK_ID: 'active_book_id',
+  CATEGORY_CACHE: 'category_cache',
 } as const;

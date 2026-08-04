@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useAuthStore } from '@/store/auth';
+import { useWechat } from '@/composables/useWechat';
 import { isPhone } from '@/utils/validator';
 
 const authStore = useAuthStore();
+const { loading: wechatLoading, error: wechatError, isWechatAvailable, login: wechatLogin } = useWechat();
 const form = ref({ phone: '', password: '' });
 const loading = ref(false);
 const errors = ref({ phone: '', password: '' });
@@ -54,23 +56,23 @@ function goToRegister() {
 
 // #ifdef MP-WEIXIN
 async function handleWechatLogin() {
-  loading.value = true;
-  try {
-    const [err, res] = await uni.login({ provider: 'weixin' });
-    if (err) {
-      uni.showToast({ title: '微信登录失败', icon: 'none' });
-      return;
-    }
-    await authStore.loginByWechat(res.code);
+  const success = await wechatLogin();
+  if (success) {
     uni.showToast({ title: '登录成功', icon: 'success' });
     setTimeout(() => {
       uni.switchTab({ url: '/pages/record/index' });
     }, 500);
-  } catch (e: any) {
-    const message = e?.message || '微信登录失败，请重试';
-    uni.showToast({ title: message, icon: 'none' });
-  } finally {
-    loading.value = false;
+
+    // 静默获取微信用户信息（不阻塞登录流程）
+    const { getUserProfile } = useWechat();
+    getUserProfile().then((profile) => {
+      if (profile?.userInfo) {
+        // 微信用户信息可在后续 Phase 中用于更新用户资料
+        console.log('[Wechat] 用户信息已获取', profile.userInfo.nickName);
+      }
+    });
+  } else {
+    uni.showToast({ title: wechatError.value || '微信登录失败', icon: 'none' });
   }
 }
 // #endif
@@ -133,9 +135,9 @@ async function handleWechatLogin() {
           <text class="divider-text">其他登录方式</text>
           <view class="divider-line" />
         </view>
-        <view class="wechat-btn" @click="handleWechatLogin">
-          <text class="wechat-icon">📱</text>
-          <text class="wechat-text">微信登录</text>
+        <view class="wechat-btn" :class="{ loading: wechatLoading }" @click="handleWechatLogin">
+          <text class="wechat-icon">{{ wechatLoading ? '⏳' : '📱' }}</text>
+          <text class="wechat-text">{{ wechatLoading ? '登录中...' : '微信登录' }}</text>
         </view>
       </view>
       <!-- #endif -->

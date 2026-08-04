@@ -3,7 +3,8 @@
     {
       "path": "pages/record/index",
       "style": {
-        "navigationBarTitleText": "记账"
+        "navigationBarTitleText": "记账",
+        "navigationStyle": "custom"
       }
     },
     {
@@ -22,24 +23,6 @@
       "path": "pages/record/detail",
       "style": {
         "navigationBarTitleText": "记录详情"
-      }
-    },
-    {
-      "path": "pages/report/index",
-      "style": {
-        "navigationBarTitleText": "统计报表"
-      }
-    },
-    {
-      "path": "pages/report/trend",
-      "style": {
-        "navigationBarTitleText": "收支趋势"
-      }
-    },
-    {
-      "path": "pages/report/category",
-      "style": {
-        "navigationBarTitleText": "分类占比"
       }
     },
     {
@@ -75,7 +58,8 @@
     {
       "path": "pages/user/profile",
       "style": {
-        "navigationBarTitleText": "个人资料"
+        "navigationBarTitleText": "我的",
+        "navigationStyle": "custom"
       }
     },
     {
@@ -83,14 +67,50 @@
       "style": {
         "navigationBarTitleText": "修改密码"
       }
+    },
+    {
+      "path": "pages/report/index",
+      "style": {
+        "navigationBarTitleText": "统计报表",
+        "navigationStyle": "custom"
+      }
     }
   ],
+
+  "subPackages": [
+    {
+      "root": "pages/report",
+      "pages": [
+        {
+          "path": "trend",
+          "style": {
+            "navigationBarTitleText": "收支趋势"
+          }
+        },
+        {
+          "path": "category",
+          "style": {
+            "navigationBarTitleText": "分类占比"
+          }
+        }
+      ]
+    }
+  ],
+
+  "preloadRule": {
+    "pages/record/index": {
+      "network": "all",
+      "packages": ["pages/report"]
+    }
+  },
+
   "globalStyle": {
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "记账",
     "navigationBarBackgroundColor": "#ffffff",
     "backgroundColor": "#f5f6fa"
   },
+
   "tabBar": {
     "color": "#999999",
     "selectedColor": "#4A90D9",

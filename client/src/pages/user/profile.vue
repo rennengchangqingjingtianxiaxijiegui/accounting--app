@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useAuthStore } from '@/store/auth';
+import { useSafeArea } from '@/composables/useSafeArea';
+import NavBar from '@/components/NavBar.vue';
 import { userApi } from '@/api/user';
 
 const authStore = useAuthStore();
+const { headerHeight } = useSafeArea();
 const editing = ref(false);
 const form = ref({ nickname: '', gender: 0 });
 const saving = ref(false);
@@ -75,7 +78,8 @@ function formatPhone(phone: string | null): string {
 <template>
   <view class="page">
     <!-- 用户头像卡片 -->
-    <view class="user-card">
+    <view class="user-card" :style="{ paddingTop: headerHeight + 40 + 'rpx' }">
+      <NavBar transparent titleColor="#ffffff" :showBack="false" />
       <view class="avatar">
         <u-icon name="account" size="80" color="#fff" />
       </view>
@@ -141,9 +145,10 @@ function formatPhone(phone: string | null): string {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 60rpx 0 40rpx;
+  padding-bottom: 40rpx;
   background: linear-gradient(135deg, $primary-color, $primary-light);
   margin-bottom: $spacing-sm;
+  position: relative;
 
   .avatar {
     width: 140rpx;

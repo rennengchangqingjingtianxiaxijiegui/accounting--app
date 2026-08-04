@@ -1,17 +1,17 @@
 // 记账记录 API
 import http from './request';
-import type { ApiResponse, PaginatedData } from '@/types/api';
-import type { RecordItem, CreateRecordParams, UpdateRecordParams, RecordFilter } from '@/types/record';
+import type { ApiResponse } from '@/types/api';
+import type { RecordItem, CreateRecordParams, UpdateRecordParams, RecordFilter, PaginatedRecords } from '@/types/record';
 
 export const recordApi = {
-  /** 记录列表（分页+筛选） */
-  getList(filter: RecordFilter): Promise<ApiResponse<PaginatedData<RecordItem>>> {
-    return http.get(`/books/${filter.bookId}/records`, { params: filter });
+  /** 记录列表（游标分页+筛选） */
+  getList(bookId: number, filter: Omit<RecordFilter, 'bookId'> = {}): Promise<ApiResponse<PaginatedRecords>> {
+    return http.get(`/books/${bookId}/records`, { params: filter });
   },
 
   /** 添加记录 */
-  create(data: CreateRecordParams): Promise<ApiResponse<RecordItem>> {
-    return http.post(`/books/${data.bookId}/records`, data);
+  create(bookId: number, data: CreateRecordParams): Promise<ApiResponse<RecordItem>> {
+    return http.post(`/books/${bookId}/records`, data);
   },
 
   /** 记录详情 */

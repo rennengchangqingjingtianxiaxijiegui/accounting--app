@@ -5,35 +5,87 @@
   "versionName": "1.0.0",
   "versionCode": "100",
   "transformPx": false,
+
   "app-plus": {
     "usingComponents": true,
+    "nvueStyleCompiler": "uni-app",
+    "compilerVersion": 3,
     "splashscreen": {
       "alwaysShowBeforeRender": true,
       "waiting": true,
       "autoclose": true,
       "delay": 0
     },
-    "modules": {},
+    "statusbar": {
+      "immersed": true
+    },
+    "modules": {
+      "OAuth": {}
+    },
     "distribute": {
       "android": {
-        "permissions": []
+        "permissions": [
+          "<uses-permission android:name=\"android.permission.INTERNET\"/>",
+          "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\"/>"
+        ],
+        "abiFilters": ["armeabi-v7a", "arm64-v8a"]
       },
-      "ios": {}
+      "ios": {
+        "dSYMs": false,
+        "privacyDescription": {
+          "NSPhotoLibraryUsageDescription": "用于上传头像图片"
+        }
+      },
+      "sdkConfigs": {}
     }
   },
+
   "mp-weixin": {
     "appid": "",
     "setting": {
       "urlCheck": true,
       "es6": true,
       "postcss": true,
-      "minified": true
+      "minified": true,
+      "minifyWXSS": true,
+      "minifyWXML": true,
+      "autoPrefixWXSS": true,
+      "uploadWithSourceMap": false
     },
-    "usingComponents": true
+    "usingComponents": true,
+    "lazyCodeLoading": "requiredComponents",
+    "workers": "",
+    "cloud": false,
+    "plugins": {},
+    "requiredBackgroundModes": [],
+    "permission": {
+      "scope.userLocation": {
+        "desc": "用于记录消费地点"
+      }
+    },
+    "networkTimeout": {
+      "request": 15000,
+      "uploadFile": 30000,
+      "downloadFile": 30000
+    }
   },
+
   "h5": {
     "router": {
-      "mode": "hash"
+      "mode": "hash",
+      "base": "/"
+    },
+    "title": "记账",
+    "publicPath": "/",
+    "template": "index.html",
+    "devServer": {
+      "port": 8080,
+      "proxy": {
+        "/api": {
+          "target": "http://localhost:3000",
+          "changeOrigin": true
+        }
+      }
     }
   }
 }
